@@ -1,0 +1,74 @@
+# =====================================================================
+# requirements.txt —— Python 的"依赖清单"
+# Java 后端类比：相当于 pom.xml / build.gradle 里那堆 <dependency>。
+# 用法：pip install -r requirements.txt（pip ≈ Maven，一条命令按清单装齐所有包）。
+# 格式：包名==版本号（== 相当于 Maven 里的固定版本号）。
+# 规则：包名和版本号不要动；# 后面是注释（pip 支持行尾注释，# 前要有空格）。
+# 说明：很多包是"间接依赖"（某个库自己又依赖的库），业务代码一般不直接用，注释里有标注。
+# =====================================================================
+aiohappyeyeballs==2.6.1  # 间接依赖：aiohttp 底层用的异步 DNS/网络加速组件，业务代码一般不用管
+aiohttp==3.13.1  # 异步 HTTP 客户端/服务端框架（openai、dashscope 等 SDK 发网络请求的底层）
+aiosignal==1.4.0  # 间接依赖：aiohttp 用的"异步回调信号"管理工具
+annotated-types==0.7.0  # 间接依赖：pydantic 用的"字段附加校验规则"声明工具
+anyio==4.11.0  # 间接依赖：异步 IO 兼容层（让同一套代码适配 asyncio/trio 两种异步框架）
+attrs==25.4.0  # 间接依赖：简化 Python 类定义的工具库（若干库的公共底层）
+bcrypt==5.0.0  # 密码加密（哈希）库，用于安全地存储用户密码（只存哈希值不存明文）
+blinker==1.9.0  # 间接依赖：事件/信号广播库（Flask 用它做内部事件通知）
+cachetools==6.2.1  # 缓存工具库（给频繁调用的结果加缓存）
+certifi==2025.10.5  # 间接依赖：SSL 根证书合集（发 HTTPS 请求时验证服务器证书用）
+cffi==2.0.0  # 间接依赖：让 Python 调用 C 语言扩展的接口（cryptography 的底层）
+charset-normalizer==3.4.4  # 间接依赖：自动识别文本编码（requests 用它处理响应内容）
+click==8.3.0  # 间接依赖：命令行参数解析库（Flask 命令行工具 flask run 的底层）
+colorama==0.4.6  # Windows 终端彩色输出（让控制台日志带颜色，好看）
+cryptography==46.0.3  # 加密算法库（SSL、JWT 签名的底层实现）
+dashscope==1.24.7  # 阿里云百炼（DashScope）大模型官方 SDK，调用通义千问等模型用
+distro==1.9.0  # 间接依赖：获取 Linux 发行版信息（openai SDK 上报环境信息用）
+dnspython==2.8.0  # 间接依赖：DNS 解析库（MongoDB 连接串是 mongodb+srv:// 格式时需要）
+flasgger==0.9.7.1  # 给 Flask 自动生成 Swagger UI 接口文档（类比 springdoc-openapi / springfox）
+Flask==3.1.2  # ★Web 框架核心，本项目后端的基础（类比 Spring Boot）
+flask-cors==6.0.1  # 跨域支持（允许浏览器跨域调用接口，类比 @CrossOrigin / 全局 CORS 配置）
+frozenlist==1.8.0  # 间接依赖：不可变列表（aiohttp 的底层数据结构）
+grpcio==1.75.1  # 间接依赖：gRPC 通信库（pymilvus 与 Milvus 通信可用的协议）
+h11==0.16.0  # 间接依赖：HTTP/1.1 协议的纯 Python 实现（httpx 的底层）
+httpcore==1.0.9  # 间接依赖：HTTP 传输核心层（httpx 的底层）
+httpx==0.28.1  # 间接依赖：现代 HTTP 客户端（openai SDK 发请求用它）
+idna==3.11  # 间接依赖：域名转 ASCII 编码的标准实现（requests 处理 URL 用）
+itsdangerous==2.2.0  # 间接依赖：数据签名工具（Flask 的 session、JWT 相关签名用）
+Jinja2==3.1.6  # 模板引擎（生成 HTML 页面用，类比 Thymeleaf）
+jiter==0.11.1  # 间接依赖：快速 JSON 解析器（openai SDK 解析大模型返回用）
+jsonschema==4.25.1  # 间接依赖：按 JSON Schema 规范校验 JSON 结构（flasgger 校验接口文档用）
+jsonschema-specifications==2025.9.1  # 间接依赖：jsonschema 的规范元数据
+MarkupSafe==3.0.3  # 间接依赖：HTML 转义（防 XSS，Jinja2 的底层）
+mistune==3.1.4  # 间接依赖：Markdown 解析器（flasgger 渲染文档说明用）
+mongoengine==0.29.1  # ★MongoDB 的 ODM 框架：实体类 + save()/objects() 操作数据库（类比 JPA/Hibernate、MyBatis-Plus）
+multidict==6.7.0  # 间接依赖：一个 key 可对应多个 value 的字典（aiohttp 处理 HTTP 头用）
+numpy==2.3.4  # ★数值计算库：生成/运算向量（一串数字），做向量检索必备
+openai==2.6.0  # ★OpenAI 兼容接口 SDK，本项目用它调用阿里 DashScope 等大模型
+packaging==25.0  # 间接依赖：版本号解析/比较工具（pip 等工具的底层）
+pandas==2.3.3  # 表格数据处理库（训练数据处理用，类比 Java 里操作 Excel/表格）
+propcache==0.4.1  # 间接依赖：属性缓存（aiohttp 的性能优化组件）
+protobuf==6.33.0  # 间接依赖：Protocol Buffers 序列化（pymilvus/gRPC 传输数据用）
+pycparser==2.23  # 间接依赖：C 语言语法解析器（cffi 的底层）
+pydantic==2.12.3  # 数据模型 + 参数校验库（类比 Java Bean Validation / DTO 校验）
+pydantic_core==2.41.4  # 间接依赖：pydantic 的核心加速实现（C 语言写的底层）
+PyJWT==2.10.1  # ★生成/校验 JWT 登录令牌（类比 java-jwt / jjwt）
+pymilvus==2.6.2  # ★Milvus 向量数据库客户端（类比 Elasticsearch 的 Java Client）
+pymongo==4.15.3  # ★MongoDB 官方驱动（mongoengine 的底层，类比 MyBatis 之于 MySQL）
+python-dateutil==2.9.0.post0  # 间接依赖：日期时间解析扩展工具
+python-dotenv==1.1.1  # ★读取 .env 配置文件到环境变量（类比 Spring 读取 application.yml）
+pytz==2025.2  # 间接依赖：时区处理（pandas 日期计算用）
+PyYAML==6.0.3  # 解析 YAML 文件（flasgger 读接口文档、读 yml 配置用）
+referencing==0.37.0  # 间接依赖：JSON Schema 里 $ref 引用解析（jsonschema 的底层）
+requests==2.32.5  # ★同步 HTTP 客户端（类比 Java 的 HttpClient / RestTemplate / OkHttp）
+rpds-py==0.27.1  # 间接依赖：Rust 实现的高性能数据结构（referencing/jsonschema 的底层）
+six==1.17.0  # 间接依赖：Python 2/3 兼容老工具（历史遗留，很多老库还依赖它）
+sniffio==1.3.1  # 间接依赖：探测当前跑在哪个异步框架里（anyio/httpx 用）
+tqdm==4.67.1  # 进度条工具（长循环/训练时显示进度百分比）
+typing-inspection==0.4.2  # 间接依赖：类型注解检查辅助（pydantic 用）
+typing_extensions==4.15.0  # 间接依赖：类型注解新特性扩展（老版本 Python 也能用新注解语法）
+tzdata==2025.2  # 间接依赖：时区数据库（pytz/pandas 查时区规则用）
+ujson==5.11.0  # 快速 JSON 序列化/反序列化（比标准 json 库快，C 语言实现）
+urllib3==2.5.0  # 间接依赖：HTTP 底层库（requests 的基石）
+websocket-client==1.9.0  # WebSocket 客户端（大模型流式输出、长连接通信用）
+Werkzeug==3.1.3  # 间接依赖：Flask 的底层 WSGI 工具库（真正处理 HTTP 请求/响应的地方）
+yarl==1.22.0  # 间接依赖：URL 解析/构造工具（aiohttp 处理地址用）

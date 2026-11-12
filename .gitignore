@@ -1,0 +1,58 @@
+# ---------- 压缩包 ----------
+*.zip
+*.7z
+*.rar
+
+# ---------- 课件 / 文档 / 截图（与项目启动无关）----------
+docAndTools(1)/
+*.pdf
+*.dmg
+*.exe
+*.msi
+agent-copilot-编排流程图.html
+lQLPJ*.png
+Copliot项目(1).pdf
+backend/代码总体架构.txt
+backend/后端使用说明.md
+backend/读类提示词.md
+frontend/前端使用说明.md
+frontend/需求文档.md
+frontend/项目架构说明.md
+frontend/image.png
+
+# ---------- 环境变量（含密钥，禁止提交）----------
+.env
+.env.bak
+.env.local
+.env.*.local
+
+# ---------- Python ----------
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# ---------- Node ----------
+node_modules/
+build/
+coverage/
+
+# ---------- 运行时产物 ----------
+logs/
+.screenshots/
+*.log
+.docker-volumes/
+api_data/*.db
+
+# ---------- 本地大模型文件 ----------
+model/
+local_embedding/*.pt
+local_embedding/*.pth
+
+# ---------- 编辑器 / 系统 ----------
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+.hosts.restore.txt

@@ -1,0 +1,26 @@
+# 环境变量（真实密钥，绝对不要提交）
+.env
+.env.bak
+.env.local
+
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# 运行产物
+logs/
+.docker-volumes/
+api_data/*.db
+
+# 本地向量模型（体积大，按需自行下载）
+model/
+local_embedding/*.pt
+local_embedding/*.pth
+
+# 编辑器 / 系统
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
