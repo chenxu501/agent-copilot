@@ -1,0 +1,71 @@
+# docker-compose.infra.yml —— 本地开发用基础设施（Milvus + MongoDB）
+# 用法：
+#   docker compose -f docker-compose.infra.yml up -d      启动
+#   docker compose -f docker-compose.infra.yml ps         查看状态
+#   docker compose -f docker-compose.infra.yml down       停止
+#
+# 端口约定（与 utils/config.py 中 local_mode=1 的分支保持一致）：
+#   Milvus  -> localhost:19530
+#   MongoDB -> localhost:27112
+#
+# 说明：Milvus 使用「本地磁盘存储」而非 MinIO 对象存储（COMMON_STORAGETYPE=local），
+#       少起一个容器，启动更快；代价是不能多节点共享存储，本地开发足够。
+
+services:
+  etcd:
+    container_name: milvus-etcd
+    image: quay.io/coreos/etcd:v3.5.18
+    environment:
+      - ETCD_AUTO_COMPACTION_MODE=revision
+      - ETCD_AUTO_COMPACTION_RETENTION=1000
+      - ETCD_QUOTA_BACKEND_BYTES=4294967296
+      - ETCD_SNAPSHOT_COUNT=50000
+    volumes:
+      - ./.docker-volumes/etcd:/etcd
+    command: etcd -advertise-client-urls=http://etcd:2379 -listen-client-urls http://0.0.0.0:2379 --data-dir /etcd
+    healthcheck:
+      test: ["CMD", "etcdctl", "endpoint", "health"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+  milvus:
+    container_name: milvus-standalone
+    image: docker.1ms.run/milvusdb/milvus:v2.5.10
+    command: ["milvus", "run", "standalone"]
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      ETCD_ENDPOINTS: etcd:2379
+      COMMON_STORAGETYPE: local
+      LOCALSTORAGE_PATH: /var/lib/milvus/data
+    volumes:
+      - ./.docker-volumes/milvus:/var/lib/milvus
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9091/healthz"]
+      interval: 10s
+      start_period: 60s
+      timeout: 10s
+      retries: 12
+    ports:
+      - "19530:19530"
+      - "9091:9091"
+    depends_on:
+      - etcd
+
+  mongodb:
+    container_name: copilot-mongo
+    image: docker.1ms.run/library/mongo:7
+    ports:
+      - "27112:27017"
+    volumes:
+      - ./.docker-volumes/mongo:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping').ok"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+
+networks:
+  default:
+    name: copilot-net
